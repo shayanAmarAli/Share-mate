@@ -1,10 +1,17 @@
 "use client"
+import FacebookLoginButton from '@/component/FacebookLogin';
 import FacebookLogin from '@greatsumini/react-facebook-login';
 
 const App = () => {
+    const handleFacebookLogin = (accessToken: string) => {
+        console.log('Facebook Access Token:', accessToken);
+        // You can handle the access token as needed (e.g., send it to your server for authentication).
+    };
     return (
         <div>
-            <FacebookLogin
+            <h1>Welcome to Next.js with Facebook Login</h1>
+            <FacebookLoginButton onLogin={handleFacebookLogin} />
+            {/* <FacebookLogin
                 appId="300766279082840"
                 onSuccess={(response) => {
                     console.log('Login Success!', response);
@@ -15,7 +22,18 @@ const App = () => {
                 onProfileSuccess={(response) => {
                     console.log('Get Profile Success!', response);
                 }}
-            />
+            /> */}
+            {/* < FacebookLogin
+                appId="300766279082840"
+                style={{
+                    backgroundColor: '#4267b2',
+                    color: '#fff',
+                    fontSize: '16px',
+                    padding: '12px 24px',
+                    border: 'none',
+                    borderRadius: '4px',
+                }}
+            /> */}
         </div>
     )
 }

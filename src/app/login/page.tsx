@@ -4,18 +4,32 @@ import FacebookLogin from '@greatsumini/react-facebook-login';
 
 const App = () => {
     const handleFacebookLogin = () => {
-        window.FB.login((response) => {
+        window.FB.login(function (response) {
             if (response.authResponse) {
-                console.log('Welcome!  Fetching your information.... ', response.authResponse.accessToken);
+                console.log('Welcome!  Fetching your information.... ');
+                const userCredentials = fetch(`https://graph.facebook.com/USER-ID?access_token=${response.authResponse.accessToken}`)
+                console.log("The userid and user name is---+++", userCredentials)
+                // console.log("The userid is---+++", userCredentials?.id)
+                // console.log("The userid and user name is---+++", userCredentials?.name)
                 FB.api('/me', function (response: any) {
                     console.log('Good to see you, ' + response.name + '.');
                 });
             } else {
                 console.log('User cancelled login or did not fully authorize.');
             }
-        }, {
-            scope: "public_profile"
-        })
+        });
+        // window.FB.login((response) => {
+        //     if (response.authResponse) {
+        //         console.log('Welcome!  Fetching your information.... ', response.authResponse.accessToken);
+        //         FB.api('/me', function (response: any) {
+        //             console.log('Good to see you, ' + response.name + '.');
+        //         });
+        //     } else {
+        //         console.log('User cancelled login or did not fully authorize.');
+        //     }
+        // }, {
+        //     scope: "public_profile"
+        // })
         // You can handle the access token as needed (e.g., send it to your server for authentication).
     };
     return (

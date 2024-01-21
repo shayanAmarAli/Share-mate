@@ -19,6 +19,8 @@ export async function GET(req: NextRequest) {
   const paramsToken: any = req.nextUrl.searchParams.get("token");
   const scopes = await getDebugToken(appAccessToken, paramsToken);
   console.log("The scope send from this api is--->", scopes);
+//   "https://graph.facebook.com/USER-ID?access_token=ACCESS-TOKEN"
+
   return NextResponse.json({ scopes: scopes });
 }
 

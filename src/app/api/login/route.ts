@@ -13,13 +13,17 @@ type ResponseData = {
 const APP_ID = "300766279082840";
 const APP_SECRET = "06c845c03c289a82c05028c6f8e22682";
 
-export default  async function handler( req: any,  res: any) {
-    const appAccessToken: any= await getAppAccessToken()
-    const scopes = await getDebugToken(appAccessToken,  req.query.token)
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse,
+  ) {
+    const appAccessToken: any = await getAppAccessToken()
+    const paramsToken: any = req.query.token
+    const scopes = await getDebugToken(appAccessToken,  paramsToken)
     console.log("The scope send from this api is--->", scopes);
     res.json({scopes})
-//   res.status(200).json({ message: "Hello from Next.js!" });
-}
+  }
+
 const getAppAccessToken = async () => {
   const response = await fetch(
     `https://graph.facebook.com/oauth/access_token?client_id=${APP_ID}&client_secret=${APP_SECRET}&grant_type=client_credentials`

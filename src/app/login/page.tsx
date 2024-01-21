@@ -2,18 +2,24 @@
 
 import FacebookLoginButton from '@/component/FacebookLogin';
 import FacebookLogin from '@greatsumini/react-facebook-login';
+import axios from 'axios';
+import { useState } from 'react';
 
 const App = () => {
+    const [userAccessToken, setUserAccessToken] = useState<any>(''); // State to store user access token
+    // const [message, setMessage] = useState<string>('Hello, this is my post!');
+
     const handleFacebookLogin = () => {
-        window.FB.login(function (response){
+        window.FB.login(function (response) {
             if (response.authResponse) {
                 console.log('Welcome!  Fetching your information.... ', response.authResponse.accessToken);
+                setUserAccessToken(response.authResponse.accessToken)
                 // fetch(`https://graph.facebook.com/USER-ID?access_token=${response.authResponse.accessToken}`)
                 fetch(`https://login-facebook-sdk.vercel.app/api/login?token=${response.authResponse.accessToken}`)
-                .then((responseUserCre: any) => console.log("Users Credential should be---+++", responseUserCre))
-                // console.log("The userid and user name is---+++", userCredentials)
-                // console.log("The userid is---+++", userCredentials.id)
-                // console.log("The userid and user name is---+++", userCredentials.name)
+                    .then((responseUserCre: any) => {
+                        console.log("Users Credential should be---+++", responseUserCre)
+                    })
+
                 FB.api('/me', function (response: any) {
                     console.log('Good to see you, ' + response.name + '.');
                 });
@@ -21,24 +27,28 @@ const App = () => {
                 console.log('User cancelled login or did not fully authorize.');
             }
         });
-        // window.FB.login((response) => {
-        //     if (response.authResponse) {
-        //         console.log('Welcome!  Fetching your information.... ', response.authResponse.accessToken);
-        //         FB.api('/me', function (response: any) {
-        //             console.log('Good to see you, ' + response.name + '.');
-        //         });
-        //     } else {
-        //         console.log('User cancelled login or did not fully authorize.');
-        //     }
-        // }, {
-        //     scope: "public_profile"
-        // })
-        // You can handle the access token as needed (e.g., send it to your server for authentication).
     };
+
+    const handlePostToTimeline = async () => {
+        const message = 'Hello, this is my post!';
+
+        try {
+            const response = await axios.post(
+                `https://graph.facebook.com/v12.0/me/feed?message=${message}&access_token=${userAccessToken}`
+            );
+
+            console.log('Post successful:', response.data);
+        } catch (error: any) {
+            console.error('Error posting to timeline:', error.response?.data || error.message);
+        }
+    };
+
     return (
         <div>
             <h1>Welcome to Next.js with Facebook Login</h1>
             <button onClick={handleFacebookLogin}>Login with facebook</button>
+            <button onClick={handlePostToTimeline}>Post to Timeline</button>
+
             {/* <FacebookLoginButton onLogin={handleFacebookLogin} /> */}
             {/* <FacebookLogin
                 appId="300766279082840"

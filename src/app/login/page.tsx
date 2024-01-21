@@ -9,14 +9,13 @@ import { FacebookShareButton, FacebookIcon } from 'react-share';
 const App = () => {
     const [userAccessToken, setUserAccessToken] = useState<any>(''); // State to store user access token
     const [userId, setUserId] = useState<any>();
-    // const [message, setMessage] = useState<string>('Hello, this is my post!');
 
     const handleFacebookLogin = () => {
         window.FB.login(function (response) {
             if (response.authResponse) {
                 console.log('Welcome!  Fetching your information.... ', response.authResponse.accessToken);
                 setUserAccessToken(response.authResponse.accessToken)
-                // fetch(`https://graph.facebook.com/USER-ID?access_token=${response.authResponse.accessToken}`)
+
                 fetch(`https://login-facebook-sdk.vercel.app/api/login?token=${response.authResponse.accessToken}`)
                     .then((responseUserCre: any) => {
                         console.log("Users Credential should be---+++", responseUserCre)
@@ -24,8 +23,7 @@ const App = () => {
 
                 FB.api('/me', function (response: any) {
                     setUserId(response.id)
-                    console.log('Good to see you, ' + response + '.');
-                    console.log('Good to see you, ' + response.id + '.');
+                    console.log('User Id is ' + response.id + '.');
                     console.log('Good to see you, ' + response.name + '.');
                 });
             } else {
@@ -34,133 +32,20 @@ const App = () => {
         });
     };
 
-    const handlePostToTimeline = async () => {
-        const message = 'Hello, this is my post!';
-
-        try {
-            // /v18.0/{user-id}/posts
-            const response = await axios.post(
-                `https://login-facebook-sdk.vercel.app/api/login`, {
-                body: JSON.stringify({
-                    userAccessToken: userAccessToken,
-                    message: message
-                })
-            }
-                // `https://graph.facebook.com/v13.0/me/feed?message=${message}&access_token=${userAccessToken}`
-            );
-
-            console.log('Post successful:', response.data);
-        } catch (error: any) {
-            console.error('Error posting to timeline:', error.response?.data || error.message);
-        }
-    };
-
-    const handleFacebookPosting = async () => {
-        try {
-            // /v18.0/{user-id}/posts
-            const response = await axios.post(
-                `https://graph.facebook.com/v18.0/${userId}/posts`);
-
-            console.log('Post successful:', response.data);
-        } catch (error: any) {
-            console.error('Error posting to timeline:', error.response?.data || error.message);
-        }
-    }
-    const title: any = 'Your Share Title';
-
     return (
         <div>
             <h1>Welcome to Next.js with Facebook Login</h1>
             <button onClick={handleFacebookLogin}>Login with facebook</button>
-            <button onClick={handlePostToTimeline}>Post to Timeline</button>
-            <button onClick={handleFacebookPosting}>Posting to User TL</button>
             <h1>Facebook Share Example</h1>
-            <FacebookShareButton 
-            url={"https://peing.net/ja/"}
-            // quote={"フェイスブックはタイトルが付けれるようです"}
-            hashtag={"#hashtag"}
-            // description={"aiueo"}
-            className="Demo__some-network__share-button"
+            <FacebookShareButton
+                url={"https://www.facebook.com/syedahsanshah.sherazi.9/posts/pfbid0rf47n5WNh2t5AXVidr4kKV13tjoru5AM3UAC1eyyAG8gVa3Yxub8mqaMaFDdoi16l?comment_id=349529657939772&notif_id=1705853557311130&notif_t=comment_mention&ref=notif"}
+                hashtag={"#hashtag"}
+                className="Demo__some-network__share-button"
             >
                 <FacebookIcon size={32} round />
             </FacebookShareButton>
-
-            {/* <FacebookLoginButton onLogin={handleFacebookLogin} /> */}
-            {/* <FacebookLogin
-                appId="300766279082840"
-                onSuccess={(response) => {
-                    console.log('Login Success!', response);
-                }}
-                onFail={(error) => {
-                    console.log('Login Failed!', error);
-                }}
-                onProfileSuccess={(response) => {
-                    console.log('Get Profile Success!', response);
-                }}
-            /> */}
-            {/* < FacebookLogin
-                appId="300766279082840"
-                style={{
-                    backgroundColor: '#4267b2',
-                    color: '#fff',
-                    fontSize: '16px',
-                    padding: '12px 24px',
-                    border: 'none',
-                    borderRadius: '4px',
-                }}
-            /> */}
         </div>
     )
 }
 
 export default App
-
-
-//     // default
-
-
-//     // custom style
-//     < FacebookLogin
-// appId = "1088597931155576"
-// style = {{
-//     backgroundColor: '#4267b2',
-//         color: '#fff',
-//             fontSize: '16px',
-//                 padding: '12px 24px',
-//                     border: 'none',
-//                         borderRadius: '4px',
-//   }}
-// />
-
-//     // custom render function
-//     < FacebookLogin
-// appId = "1088597931155576"
-// onSuccess = {(response) => {
-//     console.log('Login Success!', response);
-// }}
-// onFail = {(error) => {
-//     console.log('Login Failed!', error);
-// }}
-// onProfileSuccess = {(response) => {
-//     console.log('Get Profile Success!', response);
-// }}
-// render = {({ onClick, logout }) => (
-//     <CustomComponent onClick={onClick} onLogoutClick={logout} />
-// )}
-// />
-
-//     // custom params, options
-//     < FacebookLogin
-// appId = "1088597931155576"
-// useRedirect
-// initParams = {{
-//     version: 'v10.0',
-//         xfbml: true,
-//   }}
-// dialogParams = {{
-//     response_type: 'token',
-//   }}
-// loginOptions = {{
-//     return_scopes: true,
-//   }}
-// />

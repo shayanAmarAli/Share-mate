@@ -3,14 +3,26 @@ import FacebookLoginButton from '@/component/FacebookLogin';
 import FacebookLogin from '@greatsumini/react-facebook-login';
 
 const App = () => {
-    const handleFacebookLogin = (accessToken: string) => {
-        console.log('Facebook Access Token:', accessToken);
+    const handleFacebookLogin = () => {
+        window.FB.login((response: any) => {
+            if (response.authResponse) {
+                console.log('Welcome!  Fetching your information.... ');
+                FB.api('/me', function (response) {
+                    console.log('Good to see you, ' + response.name + '.');
+                });
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
+            }
+        }, {
+            scope: "public_profile"
+        })
         // You can handle the access token as needed (e.g., send it to your server for authentication).
     };
     return (
         <div>
             <h1>Welcome to Next.js with Facebook Login</h1>
-            <FacebookLoginButton onLogin={handleFacebookLogin} />
+            <button onClick={handleFacebookLogin}>Login with facebook</button>
+            {/* <FacebookLoginButton onLogin={handleFacebookLogin} /> */}
             {/* <FacebookLogin
                 appId="300766279082840"
                 onSuccess={(response) => {

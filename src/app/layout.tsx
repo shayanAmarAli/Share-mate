@@ -14,7 +14,7 @@ export default function RootLayout({
   useEffect(() => {
     window.fbAsyncInit = function () {
       FB.init({
-        appId: '300766279082840',
+        appId: '733266905392508',
         autoLogAppEvents: true,
         xfbml: true,
         version: 'v13.0',

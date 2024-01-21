@@ -15,13 +15,23 @@ const APP_ID = "300766279082840";
 const APP_SECRET = "06c845c03c289a82c05028c6f8e22682";
 
 export async function GET(req: NextRequest) {
-  const appAccessToken: any = await getAppAccessToken();
-  const paramsToken: any = req.nextUrl.searchParams.get("token");
-  const scopes = await getDebugToken(appAccessToken, paramsToken);
-  console.log("The scope send from this api is--->", scopes);
-//   "https://graph.facebook.com/USER-ID?access_token=ACCESS-TOKEN"
+  //   const appAccessToken: any = await getAppAccessToken();
+  const response = await fetch(
+    `https://graph.facebook.com/oauth/access_token?client_id=${APP_ID}&client_secret=${APP_SECRET}&grant_type=client_credentials`
+  );
+  const data: any = await response.json();
+  if (!response.ok) {
+    throw new Error("EROR FOUND");
+  }
 
-  return NextResponse.json({ scopes: scopes });
+  console.log(data.access_token);
+//   const paramsToken: any = req.nextUrl.searchParams.get("token");
+//   console.log("Response from the server is----++++", paramsToken);
+  //   const scopes = await getDebugToken(appAccessToken, paramsToken);
+  //   console.log("The scope send from this api is--->", scopes);
+  //   "https://graph.facebook.com/USER-ID?access_token=ACCESS-TOKEN"
+
+  return NextResponse.json({ scopes: data.access_token });
 }
 
 const getAppAccessToken = async () => {

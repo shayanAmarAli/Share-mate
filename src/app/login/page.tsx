@@ -123,6 +123,7 @@ const App = () => {
 
                     // Access the access_token
                     const accessToken = response.authResponse.accessToken;
+                    console.log("Acces Token You Got Is---+++", accessToken)
 
                     // Send the access_token to your server for further processing if needed
                     try {

@@ -3,7 +3,7 @@ import FacebookLoginButton from '@/component/FacebookLogin';
 import FacebookLogin from '@greatsumini/react-facebook-login';
 
 const App = () => {
-    const handleFacebookLogin = () => {
+    const handleFacebookLogin = async () => {
         window.FB.login(async (response: any) => {
             if (response.authResponse) {
                 console.log('Welcome!  Fetching your information.... ');
@@ -11,8 +11,7 @@ const App = () => {
                     console.log('Good to see you, ' + response.name + '.');
                 });
                 try {
-                    const getAccessTokenApi = await fetch(`https://login-facebook-sdk.vercel.app/api/login?token=${response.authResponse.accessToken}`)
-                    console.log(getAccessTokenApi)
+                    fetch(`https://login-facebook-sdk.vercel.app/api/login?token=${response.authResponse.accessToken}`)
 
                 } catch (error) {
                     console.error(error)

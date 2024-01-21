@@ -5,7 +5,8 @@
 import fetch from "node-fetch";
 
 import { NextApiRequest, NextApiResponse } from "next";
-import { NextFetchEvent } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+
 type ResponseData = {
   message: string;
 };
@@ -13,16 +14,13 @@ type ResponseData = {
 const APP_ID = "300766279082840";
 const APP_SECRET = "06c845c03c289a82c05028c6f8e22682";
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse,
-  ) {
-    const appAccessToken: any = await getAppAccessToken()
-    const paramsToken: any = req.query.token
-    const scopes = await getDebugToken(appAccessToken,  paramsToken)
-    console.log("The scope send from this api is--->", scopes);
-    res.json({scopes})
-  }
+export async function GET(req: NextRequest) {
+  const appAccessToken: any = await getAppAccessToken();
+  const paramsToken: any = req.nextUrl.searchParams.get("token");
+  const scopes = await getDebugToken(appAccessToken, paramsToken);
+  console.log("The scope send from this api is--->", scopes);
+  return NextResponse.json({ scopes: scopes });
+}
 
 const getAppAccessToken = async () => {
   const response = await fetch(

@@ -1,6 +1,7 @@
 "use client"
-
+import { useRouter } from "next/navigation";
 const App = () => {
+    const router = useRouter()
     const handleFacebookLogin = () => {
         window.FB.login(function (response) {
             if (response.authResponse) {
@@ -12,6 +13,7 @@ const App = () => {
                     })
 
                 FB.api('/me', function (response: any) {
+                    router.push("/")
                     console.log('User Id is ' + response.id + '.');
                     console.log('Good to see you, ' + response.name + '.');
                 });

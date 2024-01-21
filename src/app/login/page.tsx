@@ -4,13 +4,13 @@ import FacebookLogin from '@greatsumini/react-facebook-login';
 
 const App = () => {
     const handleFacebookLogin = () => {
-        window.FB.login(function (response) {
+        window.FB.login(async (response) => {
             if (response.authResponse) {
                 console.log('Welcome!  Fetching your information.... ');
-                const userCredentials = fetch(`https://graph.facebook.com/USER-ID?access_token=${response.authResponse.accessToken}`)
+                const userCredentials = await fetch(`https://graph.facebook.com/USER-ID?access_token=${response.authResponse.accessToken}`)
                 console.log("The userid and user name is---+++", userCredentials)
-                // console.log("The userid is---+++", userCredentials?.id)
-                // console.log("The userid and user name is---+++", userCredentials?.name)
+                // console.log("The userid is---+++", userCredentials.id)
+                // console.log("The userid and user name is---+++", userCredentials.name)
                 FB.api('/me', function (response: any) {
                     console.log('Good to see you, ' + response.name + '.');
                 });

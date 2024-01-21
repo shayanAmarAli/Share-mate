@@ -4,9 +4,14 @@ import FacebookLogin from '@greatsumini/react-facebook-login';
 
 const App = () => {
     const handleFacebookLogin = () => {
-        window.FB.login((response)=>{
-            if (response.status === "connected") {
-                console.log(response.authResponse.accessToken)
+        window.FB.login((response) => {
+            if (response.authResponse) {
+                console.log('Welcome!  Fetching your information.... ');
+                FB.api('/me', function (response: any) {
+                    console.log('Good to see you, ' + response.authResponse.access_token + '.');
+                });
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
             }
         }, {
             scope: "public_profile"

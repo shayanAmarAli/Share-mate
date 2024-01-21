@@ -36,7 +36,6 @@ const App = () => {
         <div>
             <h1>Welcome to Next.js with Facebook Login</h1>
             <button onClick={handleFacebookLogin}>Login with facebook</button>
-            <h1>Facebook Share Example</h1>
         </div>
     )
 }

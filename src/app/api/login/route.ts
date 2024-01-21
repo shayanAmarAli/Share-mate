@@ -44,18 +44,17 @@ export async function GET(req: NextRequest) {
   });
 }
 
-export default async function POST(req: NextApiRequest, res: NextApiResponse) {
-  const { userAccessToken, message } = req.body;
+export async function POST(req: NextRequest) {
+  const { userAccessToken, message } = await req.json();
 
   try {
     const response = await axios.post(
       `https://graph.facebook.com/v12.0/me/feed?message=${message}&access_token=${userAccessToken}`
     );
 
-    res.status(200).json({ success: true, data: response.data });
+    NextResponse.json({ success: true, data: response.data });
   } catch (error: any) {
-    res
-      .status(500)
+    NextResponse
       .json({ success: false, error: error.response?.data || error.message });
   }
 }

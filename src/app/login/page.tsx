@@ -23,9 +23,9 @@ const App = () => {
                     })
 
                 FB.api('/me', function (response: any) {
-                    setUserId(response.userId)
+                    setUserId(response.id)
                     console.log('Good to see you, ' + response + '.');
-                    console.log('Good to see you, ' + response.userId + '.');
+                    console.log('Good to see you, ' + response.id + '.');
                     console.log('Good to see you, ' + response.name + '.');
                 });
             } else {
@@ -59,7 +59,7 @@ const App = () => {
         try {
             // /v18.0/{user-id}/posts
             const response = await axios.post(
-                `https://login-facebook-sdk.vercel.app/v18.0/${userId}/posts`);
+                `https://graph.facebook.com/v18.0/${userId}/posts`);
 
             console.log('Post successful:', response.data);
         } catch (error: any) {
@@ -73,7 +73,7 @@ const App = () => {
             <h1>Welcome to Next.js with Facebook Login</h1>
             <button onClick={handleFacebookLogin}>Login with facebook</button>
             <button onClick={handlePostToTimeline}>Post to Timeline</button>
-            <button onClick={handleFacebookPosting}></button>
+            <button onClick={handleFacebookPosting}>Posting to User TL</button>
             <h1>Facebook Share Example</h1>
             <FacebookShareButton 
             url={"https://peing.net/ja/"}

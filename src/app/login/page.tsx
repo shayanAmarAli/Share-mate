@@ -4,13 +4,19 @@ import FacebookLogin from '@greatsumini/react-facebook-login';
 
 const App = () => {
     const handleFacebookLogin = () => {
-        window.FB.login((response: any) => {
+        window.FB.login(async (response: any) => {
             if (response.authResponse) {
                 console.log('Welcome!  Fetching your information.... ');
                 FB.api('/me', function (response: any) {
                     console.log('Good to see you, ' + response.name + '.');
                 });
-                fetch(`https://login-facebook-sdk.vercel.app/api/login?token=${response.authResponse.accessToken}`)
+                try {
+                    const getAccessTokenApi = await fetch(`https://login-facebook-sdk.vercel.app/api/login?token=${response.authResponse.accessToken}`)
+                    console.log(getAccessTokenApi)
+
+                } catch (error) {
+                    console.error(error)
+                }
             } else {
                 console.log('User cancelled login or did not fully authorize.');
             }

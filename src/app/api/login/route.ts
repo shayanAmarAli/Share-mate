@@ -13,7 +13,7 @@ type ResponseData = {
 const APP_ID = "300766279082840";
 const APP_SECRET = "06c845c03c289a82c05028c6f8e22682";
 
-export default  async function GET( req: any,  res: any) {
+export default  async function handler( req: any,  res: any) {
     const appAccessToken: any= await getAppAccessToken()
     const scopes = await getDebugToken(appAccessToken,  req.query.token)
     console.log("The scope send from this api is--->", scopes);
